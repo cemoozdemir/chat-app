@@ -1,4 +1,3 @@
-// src/components/Chat.tsx
 import { useEffect, useState } from "react";
 import socket from "../utils/socket";
 
@@ -6,20 +5,19 @@ const Chat = () => {
   const [message, setMessage] = useState("");
   const [messages, setMessages] = useState<string[]>([]);
 
-  // WebSocket'ten gelen mesajları dinle
   useEffect(() => {
     socket.on("receive_message", (newMessage: string) => {
       setMessages((prevMessages) => [...prevMessages, newMessage]);
     });
 
     return () => {
-      socket.off("receive_message"); // Bileşen unmount olduğunda dinleyiciyi kaldır
+      socket.off("receive_message");
     };
   }, []);
 
   const sendMessage = () => {
     if (message.trim()) {
-      socket.emit("send_message", message); // Mesajı backend'e gönder
+      socket.emit("send_message", message);
       setMessage("");
     }
   };
